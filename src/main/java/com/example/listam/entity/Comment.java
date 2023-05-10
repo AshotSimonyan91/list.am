@@ -13,7 +13,6 @@ public class Comment {
     private int id;
 
 
-    @Column(name = "comment")
     private String comment;
 
 

@@ -8,15 +8,13 @@ import com.example.listam.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/comments")
 public class CommentController {
 
     @Autowired
@@ -26,7 +24,7 @@ public class CommentController {
     private ItemRepository itemRepository;
 
 
-    @GetMapping("/comments/items/{id}")
+    @GetMapping("items/{id}")
     public String singleItemsComment(@PathVariable("id") int id, ModelMap modelMap) {
         Optional<Item> byId = itemRepository.findById(id);
         if (byId.isPresent()) {
@@ -40,7 +38,7 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/comments/items/{id}")
+    @PostMapping("items/{id}")
     public String singleItemsAddComment(@PathVariable("id") int id, @RequestParam("comm") String comm) {
         Comment comment = new Comment();
         comment.setComment(comm);
@@ -56,7 +54,7 @@ public class CommentController {
 
     }
 
-    @GetMapping("/comments/remove")
+    @GetMapping("remove")
     public String removeComment(@RequestParam("comm_id") int comm_id, @RequestParam("item_id")  int item_id) {
         commentRepository.deleteById(comm_id);
         return "redirect:/comments/items/" + item_id;

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/items")
 public class ItemController {
 
     @Autowired
@@ -27,14 +28,14 @@ public class ItemController {
     private CommentRepository commentRepository;
 
 
-    @GetMapping("/items")
+    @GetMapping
     public String itemsPage(ModelMap modelMap) {
         List<Item> all = itemRepository.findAll();
         modelMap.addAttribute("items", all);
         return "items";
     }
 
-    @GetMapping("items/{id}")
+    @GetMapping("{id}")
     public String singleItemsPage(@PathVariable("id") int id,ModelMap modelMap) {
         List<Comment> allByItemId = commentRepository.findAllByItemId(id);
         Optional<Item> byId = itemRepository.findById(id);
@@ -48,20 +49,20 @@ public class ItemController {
         }
     }
 
-    @GetMapping("/items/add")
+    @GetMapping("add")
     public String addItemsPage(ModelMap modelMap) {
         List<Category> all = categoryRepository.findAll();
         modelMap.addAttribute("categories", all);
         return "addItem";
     }
 
-    @PostMapping("/items/add")
+    @PostMapping("add")
     public String addItems(@ModelAttribute Item item) {
         itemRepository.save(item);
         return "redirect:/items";
     }
 
-    @GetMapping("/items/remove")
+    @GetMapping("remove")
     public String removeCategory(@RequestParam("id") int id) {
         itemRepository.deleteById(id);
         return "redirect:/items";
